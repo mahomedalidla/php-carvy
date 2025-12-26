@@ -1,4 +1,5 @@
 /vendor
 /tmp/*
 !.gitkeep
-.env
+.env\n# Directorio de salida de archivos procesados\n/output/
+\n# Directorio de salida de archivos procesados\n/output/

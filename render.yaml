@@ -1,0 +1,28 @@
+# Archivo de configuración para Render.com
+# https://render.com/docs/blueprint-spec
+
+services:
+  # Un servicio web que ejecuta Apache con PHP
+  - type: web
+    name: api-php-carvy
+    # Entorno nativo de PHP de Render
+    env: php
+    # Plan gratuito de Render. ¡Cuidado, los servicios se suspenden por inactividad!
+    plan: free
+    # Comando para instalar las dependencias de PHP en producción
+    buildCommand: "composer install --no-dev --optimize-autoloader"
+    # Render usa Apache y el directorio raíz del repo es el DocumentRoot.
+    # Las peticiones a https://tu-app.onrender.com/api.php funcionarán directamente.
+    # También necesitamos que la carpeta 'output' sea accesible.
+    # Añadimos una regla para que se puedan ver las imágenes procesadas.
+    rewriteRules:
+      - source: "/output/:path"
+        destination: "/output/:path"
+    # Variables de entorno que debes configurar en el panel de Render.
+    # Copia los valores de tu archivo .env aquí.
+    envVars:
+      - key: ILOVEIMG_PUBLIC_KEY
+        # 'sync: false' significa que el valor se debe gestionar desde el panel de Render.
+        sync: false
+      - key: ILOVEIMG_SECRET_KEY
+        sync: false

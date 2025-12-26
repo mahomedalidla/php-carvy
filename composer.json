@@ -1,0 +1,11 @@
+{
+    "name": "carvy/api",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "ilovepdf/iloveimg-php": "^1.1"
+    }
+}
