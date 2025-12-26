@@ -2,7 +2,7 @@
 // Establece el header para la respuesta JSON
 header('Content-Type: application/json');
 
-// Incluye el autoloader de Composer, que ahora también carga phpdotenv
+// Incluye el autoloader de Composer
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Carga las variables de entorno desde el archivo .env (si existe)
@@ -50,7 +50,7 @@ if (!is_dir($outputDir)) {
 
 // 1. Crear una ruta temporal segura CON la extensión del archivo original.
 $tmpFilePath = $_FILES['image_file']['tmp_name'];
-$originalFilename = basename($_FILES['image_file']['name']); // Sanitizar nombre
+$originalFilename = basename($_FILES['image_file']['name']);
 $newTempPathWithExtension = $outputDir . '/' . uniqid('temp_processing_') . '_' . $originalFilename;
 
 // 2. Mover el archivo subido a esta nueva ruta.
@@ -70,6 +70,16 @@ try {
 
     $compressTask = $removeBgTask->next('compress');
     $compressTask->setCompressionLevel('recommended');
+
+    // --- NUEVA FUNCIONALIDAD: Nombre de archivo personalizado ---
+    // Verificamos si se envió un nombre de archivo de salida en la petición.
+    if (isset($_POST['output_filename']) && !empty($_POST['output_filename'])) {
+        // Le decimos a la tarea que use este nombre para el archivo final.
+        // Es recomendable incluir la extensión (ej: 'mi-logo.jpg').
+        $compressTask->setoutputFileName($_POST['output_filename']);
+    }
+    // ---------------------------------------------------------
+
     $compressTask->execute();
 
     $downloadPath = $outputDir . '/';
