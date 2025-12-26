@@ -13,6 +13,11 @@ RUN composer install --no-dev --no-interaction --optimize-autoloader
 # Usamos la imagen oficial de PHP con el servidor web Apache
 FROM php:8.2-apache
 
+# --- LA CORRECIÓN ---
+# Habilitamos el módulo 'mod_rewrite' de Apache para que el .htaccess funcione
+RUN a2enmod rewrite
+# --------------------
+
 # Establecemos el directorio de trabajo de Apache
 WORKDIR /var/www/html
 
